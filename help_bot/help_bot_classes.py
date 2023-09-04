@@ -1,6 +1,101 @@
 from collections import UserDict
 from datetime import datetime
 import pickle, re
+from abc import ABC, abstractmethod
+
+
+# New Abstract Classes
+
+
+class AbstractAddressBook(ABC):
+    @abstractmethod
+    def add_record(self, record):
+        pass
+
+    @abstractmethod
+    def show_all_records(self):
+        pass
+
+    @abstractmethod
+    def search_record_by_name(self, key):
+        pass
+
+    @abstractmethod
+    def search_record(self, key):
+        pass
+
+    @abstractmethod
+    def birthdays(self, days):
+        pass
+
+    @abstractmethod
+    def iterator(self, n):
+        pass
+
+    @abstractmethod
+    def del_record(self, record):
+        pass
+
+    @abstractmethod
+    def save_to_file(self):
+        pass
+
+    @abstractmethod
+    def read_from_file(self):
+        pass
+
+
+class AbstractRecord(ABC):
+    def __init__(
+        self,
+        name,
+        phone=None,
+        birthday=None,
+        email=None,
+        address=None,
+    ):
+        self.name = name
+        self.birthday = birthday
+        self.phones = []
+        if phone:
+            self.phones.append(phone)
+        self.email = email
+        self.address = address
+
+    @abstractmethod
+    def add_phone(self, phone):
+        pass
+
+    @abstractmethod
+    def add_email(self, email):
+        pass
+
+    @abstractmethod
+    def add_birthday(self, birthday):
+        pass
+
+    @abstractmethod
+    def add_address(self, address):
+        pass
+
+    @abstractmethod
+    def change_phone(self, old, new):
+        pass
+
+    @abstractmethod
+    def remove_phone(self, phone):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
+    def __repr__(self):
+        pass
+
+
+# Normal Classes
 
 
 class PhoneError(Exception):
@@ -81,7 +176,7 @@ class Address(Field):
     ...
 
 
-class Record:
+class Record(AbstractRecord):
     def __init__(
         self,
         name: Name,
@@ -133,7 +228,7 @@ class Record:
         return str(self)
 
 
-class AddressBook(UserDict):
+class AddressBook(UserDict, AbstractAddressBook):
     def __init__(self, filename: str):
         UserDict.__init__(self)
         self.filename = filename
