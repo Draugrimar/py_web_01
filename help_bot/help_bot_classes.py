@@ -110,7 +110,7 @@ class EmailError(Exception):
     pass
 
 
-class Field:
+class Field(ABC):
     def __init__(self, value) -> None:
         self.__value = None
         self.value = value
